@@ -2,6 +2,7 @@
 A simplistic, customizable menu based off of [menu2](https://github.com/LUModder/gmod_menu2)
 
 Original menu2 creator: _Python1320_
+
 Maintained by _Flex_ and _KaosHeaven_
 
 REQUIREMENTS
@@ -16,7 +17,7 @@ Features
  - Console2
  - Compatable with menu_plugins
 
-installation
+Installation
 =======
  - Drop into garrysmod folder
  - Put gmcl_ and gmsv_interstate into ```lua/bin```
