@@ -157,6 +157,25 @@ function error(...)
 	olderror(...)
 end
 
+--file hack for "LUA" for menu state
+oldFileRead = oldFileRead or file.Read
+oldFileExists = oldFileExists or file.Exists
+function file.Read(f,d)
+	if d == "LUA" then
+		oldFileRead("lua/"..f,"GAME")
+	else
+		oldFileRead(f,d)
+	end
+end
+
+function file.Exists(f,d)
+	if d == "LUA" then
+		oldFileExists("lua/"..f,"GAME")
+	else
+		oldFileExists(f,d)
+	end
+end
+
 function m2_interstate()
 	_G.console2 = vgui.Create("DFrame")
 	console2:SetSize(800,300)
