@@ -326,7 +326,7 @@ function m2_interstate()
 			elseif cmd == "c" then
 				if not args or args == "" then logClient("Incorrect arguments!\n") return end
 				logClient(args)
-				local a = CompileString("interstate.RunOnClient(\""..args.."\")","interstate_client",false)
+				local a = CompileString("interstate.RunOnClient(\""..(args):gsub("\"","\\\"").."\")","interstate_client",false)
 				if isfunction(a) then a() else error(a, 2) end
 			elseif cmd == "help" then
 				logHelp()
