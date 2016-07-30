@@ -1,5 +1,3 @@
-slimenu_config = slimenu_config or luadata.ReadFile("slimenu_config.txt")
-
 --let the hijacking begin
 --credit to EPOE for most of the redirects
 --https://github.com/Metastruct/EPOE/
@@ -78,9 +76,11 @@ function print(...)
 	local ok,str=pcall(ToStringEx," ",...)
 	if not ok then oldPrint(str) end
 	if not str then return end
+	if str == "no value" then str = "" end
+
 	if IsValid(console2) and IsValid(console2.log) then
 		console2.log:InsertColorChange(255,255,255,255)
-		console2.log:AppendText("\n"..str)
+		console2.log:AppendText(str.."\n")
 	end
 end
 
@@ -88,8 +88,9 @@ end
 function Msg(...)
 	oldMsg(...)
 	local ok,str=pcall(ToStringEx,"",...)
-	if not ok then oldPrint(str) end
+	if not ok then oldPrint(str or "") end
 	if not str then return end
+	if str == "no value" then str = "" end
 
 	if IsValid(console2) and IsValid(console2.log) then
 		console2.log:InsertColorChange(255,150,0,255)
@@ -100,8 +101,9 @@ end
 function MsgN(...)
 	oldMsgN(...)
 	local ok,str=pcall(ToStringEx,"",...)
-	if not ok then oldPrint(str) end
+	if not ok then oldPrint(str or "") end
 	if not str then return end
+	if str == "no value" then str = "" end
 
 	if IsValid(console2) and IsValid(console2.log) then
 		console2.log:InsertColorChange(255,150,0,255)
@@ -113,8 +115,9 @@ local function _MsgC(col,...)
 	oldMsgC(col,...)
 	if not col or not col.r then return end
 	local ok,str=pcall(ToStringEx,"",...)
-	if not ok then oldPrint(str) end
+	if not ok then oldPrint(str or "") end
 	if not str then return end
+	if str == "no value" then str = "" end
 
 	if IsValid(console2) and IsValid(console2.log) then
 		console2.log:InsertColorChange(col.r,col.b,col.g,col.a)
@@ -145,16 +148,16 @@ end
 
 function error(...)
 	local ok,str=pcall(ToStringEx," ",...)
-	if not ok then oldPrint(str) end
+	if not ok then oldPrint(str or "") end
 	if not str then return end
 
 	if IsValid(console2) and IsValid(console2.log) then
 		console2.log:InsertColorChange(200,100,100,255)
-		console2.log:AppendText("\nERROR: "..str.."\n")
+		console2.log:AppendText("ERROR: "..str.."\n")
 		console2.log:AppendText(debug.traceback().."\n")
 	end
 
-	olderror(...)
+	return olderror(...)
 end
 
 --file hack for "LUA" for menu state
@@ -162,17 +165,17 @@ oldFileRead = oldFileRead or file.Read
 oldFileExists = oldFileExists or file.Exists
 function file.Read(f,d)
 	if d == "LUA" then
-		oldFileRead("lua/"..f,"GAME")
+		return oldFileRead("lua/"..f,"GAME")
 	else
-		oldFileRead(f,d)
+		return oldFileRead(f,d)
 	end
 end
 
 function file.Exists(f,d)
 	if d == "LUA" then
-		oldFileExists("lua/"..f,"GAME")
+		return oldFileExists("lua/"..f,"GAME")
 	else
-		oldFileExists(f,d)
+		return oldFileExists(f,d)
 	end
 end
 
@@ -268,16 +271,16 @@ function m2_interstate()
 
 	local function logMenu(str)
 		log:InsertColorChange(100,200,100,255)
-		log:AppendText("\n[Menu] ")
+		log:AppendText("[Menu] ")
 		log:InsertColorChange(255,255,255,255)
-		log:AppendText(str)
+		log:AppendText((str or "") .. "\n")
 	end
 
 	local function logClient(str)
 		log:InsertColorChange(100,200,200,255)
-		log:AppendText("\n[Client] ")
+		log:AppendText("[Client] ")
 		log:InsertColorChange(255,255,255,255)
-		log:AppendText(str)
+		log:AppendText((str or "") .. "\n")
 	end
 
 	local input_box = vgui.Create("EditablePanel",console2)
@@ -285,8 +288,9 @@ function m2_interstate()
 	input_box:SetTall(24)
 	local inp = vgui.Create("DTextEntry",input_box)
 	inp:Dock(FILL)
-	inp.m_bHistory = true
+	inp:SetHistoryEnabled(true)
 	inp:SetFont("BudgetLabel")
+	inp.HistoryPos = 0
 
 	function inp:Paint(w,h)
 		draw.RoundedBox(0,0,0,w,h,Color(30,30,30))
@@ -299,46 +303,64 @@ function m2_interstate()
 	send:SetWide(32)
 	send:SetText("Send")
 
-	function inp:OnEnter()
-		local str = inp:GetValue()
-		inp:SetValue("")
+	function inp:OnKeyCodeTyped(key)
+		if key == KEY_ENTER then
+			local str = inp:GetValue()
+			if str == "" then return end
 
-		inp:SetText("")
-		inp:OnValueChange("")
+			inp:AddHistory(str)
+			inp:SetText("")
 
-		local cmd,args = str:match("^(.+) (.+)")
-		if cmd and args then
-			if cmd == ".m" then
-				CompileString(args,"interstate_menu",true)()
-				oldPrint("[Console2] menu: "..args)
+			inp.HistoryPos = 0
+
+			MsgC(Color(182,182,182),"\n$ " .. str .. "\n")
+
+			local cmd 	= str:match("%.(.-) ") or str:match("%.(.+)") or ""
+			local args 	= str:match("%..- (.+)")
+
+			if cmd == "m" then
+				if not args or args == "" then logMenu("Incorrect arguments!\n") return end
 				logMenu(args)
-			elseif cmd == ".c" then
-				CompileString("interstate.RunOnClient("..args..")","interstate_client",true)()
-				oldPrint("[Console2] client: "..args)
+				local a = CompileString(args,"interstate_menu",false)
+				if isfunction(a) then a() else error(a, 2) end
+			elseif cmd == "c" then
+				if not args or args == "" then logClient("Incorrect arguments!\n") return end
 				logClient(args)
-			elseif cmd == ".help" then
+				local a = CompileString("interstate.RunOnClient(\""..args.."\")","interstate_client",false)
+				if isfunction(a) then a() else error(a, 2) end
+			elseif cmd == "help" then
 				logHelp()
+			elseif cmd == "reload" then
+				console2:Close()
+				m2_interstate()
+			elseif cmd == "clear" then
+				console2.log:SetText("")
+				console2.log:GotoTextEnd()
+			else
+				MsgC(Color(128,128,128),"\nUnknown command.\n")
 			end
-		elseif str == ".help" then
-			logHelp()
-		elseif str == ".reload" then
-			console2:Close()
-			m2_interstate()
-		elseif str == ".clear" then
-			console2.log:SetText("")
-			console2.log:GotoTextEnd()
-		else
-			MsgC(Color(128,128,128),"\nUnknown command.")
+		end
+
+		--print(key == KEY_UP, key == KEY_DOWN)
+
+		if key == KEY_UP then
+			inp.HistoryPos = inp.HistoryPos - 1
+			inp:UpdateFromHistory()
+		end
+
+		if key == KEY_DOWN then
+			inp.HistoryPos = inp.HistoryPos + 1
+			inp:UpdateFromHistory()
 		end
 	end
 
-	send.DoClick = inp.OnEnter
+	send.DoClick = function() inp:OnKeyCodeTyped(KEY_ENTER) end
 end
 
 hook.Add( "OnLuaError", "Console2", function( str, realm, addontitle, addonid )
 	if IsValid(console2) and IsValid(console2.log) then
 		console2.log:InsertColorChange(200,100,100,255)
-		console2.log:AppendText("\nError: ")
+		console2.log:AppendText("Error: ")
 		console2.log:InsertColorChange(255,255,255,255)
 		console2.log:AppendText(str)
 		console2.log:InsertColorChange(100,200,100,255)

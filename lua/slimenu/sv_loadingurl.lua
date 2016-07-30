@@ -21,7 +21,7 @@ function PANEL:PerformLayout()
 	self:SetSize( 1,1 )
 	self:SetPopupStayAtBack(true)
 	self:MoveToBack()
-	
+
 end
 
 
@@ -42,7 +42,7 @@ function PANEL:OnActivate()
 
 	print("LoadingURL",GetConVarString"hostip")
 	if not lua_loading_screen_hide:GetBool() then return end
-	
+
 	RunConsoleCommand "showconsole"
 	gui.HideGameUI()
 	gui.ActivateGameUI()
@@ -60,7 +60,7 @@ function PANEL:OnActivate()
 		RunConsoleCommand "showconsole"
 	end)
 	end)
-	
+
 end
 
 local lua_loading_screen_transp = CreateClientConVar("lua_loading_screen_transp","0",true,false)
@@ -79,7 +79,7 @@ function PANEL:OnDeactivate()
 		lurl=nil
 	end
 	print("Unloading",GetDefaultLoadingHTML())
-	
+
 end
 
 function PANEL:Think()
@@ -97,13 +97,13 @@ local pnl = nil
 
 function GetLoadPanel()
 	print"GetLoadPanel"
-	
+
 	if ( !IsValid( pnl ) ) then
 		pnl = vgui.CreateFromTable( factor )
 	end
 
 	return pnl
-	
+
 end
 
 -- Uncomment this to make loading panel centered
@@ -111,7 +111,7 @@ end
 
 --engine
 function UpdateLoadPanel( strJavascript )
-	
+
 	print("UpdateLoadPanel",strJavascript)
 end
 
@@ -121,16 +121,16 @@ function GameDetails( servername, serverurl, mapname, maxplayers, steamid, gamem
 
 	if ( engine.IsPlayingDemo() ) then return end
 
-	
+
 	g_ServerName	= servername
 	g_MapName		= mapname
 	g_ServerURL		= serverurl
 	g_MaxPlayers	= maxplayers
 	g_SteamID		= steamid
 	g_GameMode		= gamemode
-	MsgN( "servername ",servername )
+	MsgN( "\nservername ",servername )
 	MsgN( "serverurl ",serverurl )
-	
+
 	if not lurl and lua_loading_screen:GetBool() then
 		lurl = vgui.Create('DHTML',self)
 		lurl.Paint=function() end
@@ -139,16 +139,16 @@ function GameDetails( servername, serverurl, mapname, maxplayers, steamid, gamem
 		lurl:MoveToBack()
 		lurl:OpenURL(g_ServerURL)
 	end
-	
-	
+
+
 	MsgN( "gamemode ",gamemode )
 	MsgN( "mapname ",mapname )
 	MsgN( "maxplayers ",maxplayers )
 	MsgN( "steamid ",steamid )
-	
+
 	serverurl = serverurl:Replace( "%s", steamid )
 	serverurl = serverurl:Replace( "%m", mapname )
 
 	if CreateMenu then CreateMenu() end
-	
+
 end
