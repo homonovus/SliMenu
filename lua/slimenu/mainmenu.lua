@@ -1,13 +1,18 @@
 require("interstate")
 include("slimenu/luadata.lua")
 
-if not file.Exists("slimenu_config.txt","DATA") then
-	luadata.WriteFile("slimenu_config.txt",{
-		AccentColor = Color(0,150,130),
-		LoadMenuPlugins = false,
-	})
+local def_config = {
+	AccentColor = Color(0,150,130),
+	LoadMenuPlugins = false,
+}
+
+slimenu_config = {}
+setmetatable(slimenu_config, {__index = def_config})
+
+do
+	local t = luadata.ReadFile("slimenu_config.txt")
+	if t then table.CopyFromTo(t, slimenu_config) end
 end
-slimenu_config = luadata.ReadFile("slimenu_config.txt")
 
 local R=function(a,b,c,d,e) return function() return RunConsoleCommand(a,b,c,d,e) end end
 local M=function(x) return function() return RunGameUICommand(x) end end
@@ -48,6 +53,7 @@ local function m2_config()
 	menup:DockMargin(0,4,0,0)
 	menup:SetText("Load menu_plugins")
 	menup:SetValue(slimenu_config.LoadMenuPlugins)
+	function menup:OnChange(v) print("changed menuplugins") slimenu_config.LoadMenuPlugins = v end
 
 	local apply = vgui.Create("DButton",config)
 	apply:Dock(BOTTOM)
@@ -55,13 +61,17 @@ local function m2_config()
 	apply:SetIcon("icon16/tick.png")
 
 	apply.DoClick = function()
-		slimenu_config.AccentColor = acccol:GetColor()
-		slimenu_config.LoadMenuPlugins = menup:GetValue()
-		luadata.WriteFile("slimenu_config.txt",slimenu_config)
+		local color = acccol:GetColor()
+		color = Color(color.r,color.g,color.b,255)
+		slimenu_config.AccentColor = color
+		luadata.WriteFile("slimenu_config.txt", slimenu_config)
+
 		include'includes/menu.lua'
 		hook.Call("MenuStart")
+
 		config:Close()
 		console2:Close()
+
 		m2_interstate()
 	end
 end
@@ -72,18 +82,20 @@ local servers = {
 	{"Xenora",        "xenora.net:27035"},
 	{"FlexBox",       "xenora.net:27018"},
 	{"Pococraft",     "72.14.181.134"},
+	{"HexaHedron",		"ip.hexahedron.pw"},
 }
+
 
 local mainmenu = {
 	{"resume_game",    gui.HideGameUI,          "icon16/joystick.png",     show=IsInGame},
 	{"disconnect",     M"disconnect",           "icon16/disconnect.png",   show=IsInGame},
-	{"reconnect",      R"retry",                "icon16/connect.png",      show=WasInGame},
+	{"Reconnect",      R"retry",                "icon16/connect.png",      show=WasInGame},
 	{"server_players", M"openplayerlistdialog", "icon16/group_delete.png", show=IsInGame},
 
 	{"new_game",       R"menu_play",         "icon16/world_add.png"}, -- i hope this works
 	{"legacy_browser", M"openserverbrowser", "icon16/server_go.png"},
 
-	{"Change Background", ChangeBackground, "icon16/picture.png"},
+	{"Change Background", ChangeBackground, "icon16/picture.png", show=NOT(IsInGame)},
 
 	{"options", M"openoptionsdialog", "icon16/wrench.png"},
 

@@ -32,8 +32,8 @@ do
 		ErrorNoHalt"LUADATA SECURITY WARNING: Unable to load verifier, update me!\n"
 		opcode_checker = function() return function() return true end end
 	else
-		
-		
+
+
 		local jutil = jit.util or require'jit.util'
 		local band =  bit.band
 
@@ -66,41 +66,41 @@ do
 
 
 		opcode_checker = function(white)
-			
+
 			local opwhite = {}
 			for i=0,#opcodes do table.insert(opwhite, false) end
-			
-			
+
+
 			local function iswhitelisted(opnum)
 				local ret = opwhite[opnum]
 				if ret == nil then
 					error("opcode not found " .. opnum)
 				end
-			
+
 				return ret
 			end
-			
+
 			local function add_whitelist(num)
 				if opwhite[num] == nil then
 					error "invalid opcode num"
 				end
-			
+
 				opwhite[num] = true
 			end
-			
+
 			for line in white:gmatch '[^\r\n]+' do
-				
+
 				local opstr_towhite = line:match '[%w]+'
-				
+
 				if opstr_towhite and opstr_towhite:len() > 0 then
 					local whiteopnum = getopnum(opstr_towhite)
 					add_whitelist(whiteopnum)
 					assert(iswhitelisted(whiteopnum))
 				end
-			
+
 			end
-			
-			
+
+
 			local function checker_function(func,max_opcodes)
 				max_opcodes = max_opcodes or math.huge
 				for i = 1, max_opcodes do
@@ -108,7 +108,7 @@ do
 					if not ret then
 						return true
 					end
-				
+
 					if not iswhitelisted(ret) then
 						--error("non-whitelisted: " .. )
 						return false,"non-whitelisted: "..opcodes[ret]
@@ -278,13 +278,13 @@ local env = {
 -- TODO: Bytecode analysis for bad loop and string functions?
 function luadata.Decode(str,nojail)
 	local func = CompileString(string.format("return { %s }",str), "luadata_decode", false)
-	
+
 	if type(func) == "string" then
 		ErrorNoHalt("Luadata decode syntax: "..tostring(func):gsub("^luadata_decode","")..'\n')
-		
+
 		return {},func
 	end
-	
+
 	if not nojail then
 		setfenv(func,env)
 	elseif istable(nojail) then
@@ -292,28 +292,28 @@ function luadata.Decode(str,nojail)
 	elseif isfunction(nojail) then
 		nojail( func )
 	end
-	
-	
+
+
 	local ok,err = is_func_ok( func )
 	if not ok or err then
 		err = err or "invalid opcodes detected"
 		ErrorNoHalt("Luadata opcode: "..tostring(err):gsub("^luadata_decode","")..'\n')
-		
+
 		return {},err
 	end
-	
+
 	local ok, err = pcall(func)
-	
+
 	if not ok then
 		ErrorNoHalt("Luadata decode: "..tostring(err):gsub("^luadata_decode","")..'\n')
-		
+
 		return {},err
 	end
-	
+
 	if isfunction(nojail) then
 		nojail( func, err )
 	end
-	
+
 	return err
 end
 
