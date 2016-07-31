@@ -121,6 +121,11 @@ function GameDetails( servername, serverurl, mapname, maxplayers, steamid, gamem
 
 	if ( engine.IsPlayingDemo() ) then return end
 
+	MsgN( "servername ",servername )
+	MsgN( "serverurl ",serverurl )
+
+	serverurl = serverurl:Replace( "%s", steamid )
+	serverurl = serverurl:Replace( "%m", mapname )
 
 	g_ServerName	= servername
 	g_MapName		= mapname
@@ -128,8 +133,6 @@ function GameDetails( servername, serverurl, mapname, maxplayers, steamid, gamem
 	g_MaxPlayers	= maxplayers
 	g_SteamID		= steamid
 	g_GameMode		= gamemode
-	MsgN( "\nservername ",servername )
-	MsgN( "serverurl ",serverurl )
 
 	if not lurl and lua_loading_screen:GetBool() then
 		lurl = vgui.Create('DHTML',self)
@@ -140,14 +143,10 @@ function GameDetails( servername, serverurl, mapname, maxplayers, steamid, gamem
 		lurl:OpenURL(g_ServerURL)
 	end
 
-
 	MsgN( "gamemode ",gamemode )
 	MsgN( "mapname ",mapname )
 	MsgN( "maxplayers ",maxplayers )
 	MsgN( "steamid ",steamid )
-
-	serverurl = serverurl:Replace( "%s", steamid )
-	serverurl = serverurl:Replace( "%m", mapname )
 
 	if CreateMenu then CreateMenu() end
 
