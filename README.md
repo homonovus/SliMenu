@@ -1,9 +1,13 @@
 # SliMenu
 A simplistic, customizable menu based off of [menu2](https://github.com/LUModder/gmod_menu2)
 
-Original menu2 creator: _Python1320_
-
-Maintained by _Flex_ and _KaosHeaven_
+Credits
+=======
+_Python1320_ - menu2
+_Flex_ - Maintainer
+_KaosHeaven_ - Maintainer
+_Q2F2_ - Major fixes
+_Leystryku_ - New Game menu from [die_awesomium](https://github.com/Leystryku/die_awesomium)
 
 REQUIREMENTS
 =======
@@ -24,9 +28,10 @@ Installation
 
 Screenshots
 =======
-![](http://flexbox.us.to/ShareX/2016/05/hl2_2016-05-26_19-46-54.png)
-![](http://flexbox.us.to/ShareX/2016/05/hl2_2016-05-26_19-47-41.png)
-![](http://flexbox.us.to/ShareX/2016/05/hl2_2016-05-26_19-47-51.png)
+![Main Menu](http://i.imgur.com/3SzKt4b.png)
+![SliMenu Options](http://i.imgur.com/XNOHJzH.png)
+![New Game Menu](http://i.imgur.com/pmNqPNT.png)
+![Console2](http://i.imgur.com/46FMljY.png)
 
 License
 =======
