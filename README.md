@@ -11,7 +11,7 @@ _Leystryku_ - New Game menu from [die_awesomium](https://github.com/Leystryku/di
 
 REQUIREMENTS
 =======
- - [gm_interstate](https://github.com/danielga/gm_interstate)
+ - [gm_interstate](https://github.com/danielga/gm_interstate) ([binaries](https://github.com/LUModder/SliMenu/releases/download/v1.0/bin.zip))
 
 Features
 =======
