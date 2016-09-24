@@ -91,8 +91,6 @@ function PANEL:LaunchGame( bMultiplayer )
 		RunConsoleCommand( "disconnect" )
 		RunConsoleCommand( "sv_cheats", "0" )
 		
-		RunConsoleCommand( "maxplayers", GetConVarNumber( "maxplayers" ) )
-		
 	end
 	
 	RunConsoleCommand( "map", self.Map )
