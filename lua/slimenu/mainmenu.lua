@@ -81,7 +81,6 @@ local servers = {
  	{"Metastruct #2", "g2.metastruct.net"},
 	{"Xenora",        "xenora.net:27035"},
 	{"FlexBox",       "xenora.net:27018"},
-	{"Pococraft",     "72.14.181.134"},
 	{"HexaHedron",		"ip.hexahedron.pw"},
 }
 
