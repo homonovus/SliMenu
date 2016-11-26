@@ -77,10 +77,9 @@ local function m2_config()
 end
 
 local servers = {
-	{"Metastruct #1", "g1.metastruct.net"},
- 	{"Metastruct #2", "g2.metastruct.net"},
-	{"Xenora",        "xenora.net:27035"},
-	{"FlexBox",       "xenora.net:27018"},
+	{"Metastruct",		"g1.metastruct.net"},
+	{"Xenora",		"xenora.net:27035"},
+	{"IJWTB",		"192.223.29.49:27015"},
 	{"HexaHedron",		"ip.hexahedron.pw"},
 }
 
