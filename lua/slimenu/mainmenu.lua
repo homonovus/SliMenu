@@ -77,12 +77,12 @@ local function m2_config()
 end
 
 local servers = {
-	{"Metastruct",		"g1.metastruct.net"},
-	{"Xenora",		"xenora.net:27035"},
-	{"IJWTB",		"192.223.29.49:27015"},
-	{"HexaHedron",		"ip.hexahedron.pw"},
+	{"Metastruct",     "g1.metastruct.net"},
+	{"IJWTB",          "192.223.29.49:27015"},
+	{"HexaHedron",     "ip.hexahedron.pw"},
+	{"Flex's Estates", "ext.kaosheaven.xyz"},
+	{"PAC3",           "threekelv.in"}
 }
-
 
 local mainmenu = {
 	{"resume_game",    gui.HideGameUI,          "icon16/joystick.png",     show=IsInGame},
