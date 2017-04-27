@@ -11,8 +11,9 @@ _Leystryku_ - New Game menu from [die_awesomium](https://github.com/Leystryku/di
 
 REQUIREMENTS
 =======
- - [gm_interstate](https://github.com/danielga/gm_interstate) ([binaries](https://github.com/LUModder/SliMenu/releases/download/v1.0/bin.zip))
-
+ - gm_interstate
+  grab them from the releases tab
+  
 Features
 =======
  - No awesomium
@@ -28,10 +29,7 @@ Installation
 
 Screenshots
 =======
-![Main Menu](http://i.imgur.com/3SzKt4b.png)
-![SliMenu Options](http://i.imgur.com/XNOHJzH.png)
-![New Game Menu](http://i.imgur.com/pmNqPNT.png)
-![Console2](http://i.imgur.com/46FMljY.png)
+none right now as imgur has deleted our screenshots grrrrr
 
 License
 =======
