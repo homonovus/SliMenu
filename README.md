@@ -12,7 +12,7 @@ _Leystryku_ - New Game menu from [die_awesomium](https://github.com/Leystryku/di
 REQUIREMENTS
 =======
  - gm_interstate
-  grab them from the releases tab
+ - grab the binaries from the releases tab
   
 Features
 =======
