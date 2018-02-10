@@ -31,4 +31,7 @@ include( "slimenu/interstate_gui.lua" )
 include( "slimenu/luadata.lua" )
 include( "slimenu/table_dump.lua" )
 
+--gui.openurl
+include( "menu/openurl.lua" )
+
 print "Loaded SliMenu"
