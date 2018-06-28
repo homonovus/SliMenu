@@ -69,7 +69,6 @@ local function m2_config()
 		hook.Call("MenuStart")
 
 		config:Close()
-		console2:Close()
 	end
 end
 
