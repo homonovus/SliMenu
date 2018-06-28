@@ -25,7 +25,7 @@ include( "slimenu/maplist_iconview.lua" )
 include( "slimenu/maplist_listview.lua" )
 include( "slimenu/startgame.lua" )
 include( "slimenu/playgame.lua" )
-include( "slimenu/interstate_gui.lua" )
+--include( "slimenu/interstate_gui.lua" )
 
 --helpers
 include( "slimenu/luadata.lua" )
