@@ -1,4 +1,3 @@
-require("interstate")
 include("slimenu/luadata.lua")
 
 local def_config = {
@@ -71,8 +70,6 @@ local function m2_config()
 
 		config:Close()
 		console2:Close()
-
-		m2_interstate()
 	end
 end
 
@@ -175,29 +172,6 @@ function btn_console:PerformLayout()
 	DLabel.PerformLayout( self )
 end
 btn_console.DoClick = R"showconsole"
-
-local btn_interstate = vgui.Create("DImageButton",menu_bar)
-btn_interstate:Dock(RIGHT)
-btn_interstate:SetWide(24)
-btn_interstate:DockMargin(0,0,4,0)
-btn_interstate:SetImage("icon16/application_xp_terminal.png")
-btn_interstate:SetText("")
-btn_interstate:SetTooltip("Console2")
-function btn_interstate:PerformLayout()
-	if ( IsValid( self.m_Image ) ) then
-		self.m_Image:SetSize( 16, 16 )
-		self.m_Image:SetPos( ( self:GetWide() - self.m_Image:GetWide() ) * 0.5, ( self:GetTall() - self.m_Image:GetTall() ) * 0.5 )
-	end
-	DLabel.PerformLayout( self )
-end
-btn_interstate.DoClick = function()
-	if console2 and IsValid(console2) then
-		console2:SetVisible(true)
-		console2:PerformLayout()
-	else
-		m2_interstate()
-	end
-end
 
 local btn_config = vgui.Create("DImageButton",menu_bar)
 btn_config:Dock(RIGHT)
@@ -541,10 +515,6 @@ local function _CreateMenu()
 
 	CreateExtraSettings()
 	CreateGames()
-
-	if not console2 and not IsValid(console2) then
-		m2_interstate()
-	end
 
 	if slimenu_config.LoadMenuPlugins then
 		include'menu_plugins/init.lua'
