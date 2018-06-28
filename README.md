@@ -11,20 +11,18 @@ _Leystryku_ - New Game menu from [die_awesomium](https://github.com/Leystryku/di
 
 REQUIREMENTS
 =======
- - gm_interstate - grab the binaries from the releases tab
+ - None
   
 Features
 =======
  - No awesomium
  - Map browser
  - Colorable menu bars
- - Console2
  - Compatable with menu_plugins
 
 Installation
 =======
  - Drop into garrysmod folder
- - Put gmcl_ and gmsv_interstate into ```lua/bin```
 
 Screenshots
 =======
