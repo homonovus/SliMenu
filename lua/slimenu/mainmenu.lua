@@ -13,6 +13,10 @@ do
 	if t then table.CopyFromTo(t, slimenu_config) end
 end
 
+if slimenu_config.LoadMenuPlugins then
+	include("menu_plugins/init.lua")
+end
+
 local R=function(a,b,c,d,e) return function() return RunConsoleCommand(a,b,c,d,e) end end
 local M=function(x) return function() return RunGameUICommand(x) end end
 local C=function(x) return function() return JoinServer(x) end end
@@ -52,7 +56,7 @@ local function m2_config()
 	menup:DockMargin(0,4,0,0)
 	menup:SetText("Load menu_plugins")
 	menup:SetValue(slimenu_config.LoadMenuPlugins)
-	function menup:OnChange(v) print("changed menuplugins") slimenu_config.LoadMenuPlugins = v end
+	function menup:OnChange(v) slimenu_config.LoadMenuPlugins = v end
 
 	local apply = vgui.Create("DButton",config)
 	apply:Dock(BOTTOM)
@@ -514,11 +518,6 @@ local function _CreateMenu()
 
 	CreateExtraSettings()
 	CreateGames()
-
-	if slimenu_config.LoadMenuPlugins then
-		include'menu_plugins/init.lua'
-	end
-
 end
 
 function CreateMenu()
@@ -557,8 +556,4 @@ end )
 
 hook.Add( "MenuStart", "CreateMenu", function(status)
 	CreateMenu()
-end )
-
-hook.Add( "LoadingStatus", "CreateMenu", function(status)
-	--CreateMenu()
 end )
